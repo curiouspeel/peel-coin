@@ -32,11 +32,14 @@
   }
 } */
 
+.App{
+  background-color: #81cad8;
+  min-height: 100vh;
+  padding: 20px;
+}
+
 .card-container{
-  border: 1px solid blue;
   display: grid;
-  grid-template-columns: 400px 400px 400px;
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  /* display: flex; */
-  
 }

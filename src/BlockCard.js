@@ -8,18 +8,31 @@ function BlockCard(props){
 
     return(
         <div className="card">
-            <h3>
+            <h3 className="card-title">
                 BLOCK {props.index}
             </h3>
-            
-            <ul>
-            <li>Timsestamp: {props.timestamp}</li>
-            <li>Data: {props.data}</li>
-            <li>Hash: {props.hash}</li>
-            <li>Previous hash: {props.previousHash}</li>
-            </ul>
 
-            
+            <div className="card-info">
+                <ul>
+                    <li><strong>Hash:</strong> 
+                        <li>{props.hash}</li>
+                    </li>
+                    <li><strong>Hash of previous block:</strong> 
+                        <li>{props.previousHash}</li>
+                    </li>
+                </ul>
+            </div>
+                
+            <div className="card-info">
+                <ul>
+                    <li><strong>Timsestamp: </strong>
+                        <li>{props.timestamp}</li>
+                    </li>
+                    <li><strong>Data:</strong> 
+                        <li>{props.data}</li>
+                    </li>
+                </ul>
+            </div>
         </div>
     );
 }

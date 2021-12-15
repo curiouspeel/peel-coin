@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 ReactDOM.render(
-    <App author="curious-peel"/>,
+    <App author="Priyanka Joshy"/>,
     document.getElementById('root')
 );
 

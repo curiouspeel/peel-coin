@@ -7,11 +7,11 @@ function App(props) {
 
   // create blockchain
   let priCoin = new myBlockChain();
-  // let name= "cute boi";
-
 
   // create blocks
-  priCoin.addBlock(new myBlock(1, "2222", "hin"));
+  priCoin.addBlock(new myBlock(1, "26/09/2021", "test-data-1"));
+  priCoin.addBlock(new myBlock(2, "22/11/2021", "test-data-2"));
+  // priCoin.addBlock(new myBlock(3, "13/12/2021", "test-data-3"));
 
   console.log(priCoin);
 
