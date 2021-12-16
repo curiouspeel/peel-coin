@@ -1,17 +1,24 @@
 const SHA256 = require('crypto-js/sha256');
 
+class Transaction{
+    constructor(fromAddress, toAddress, amount){
+        this.fromAddress = fromAddress;
+        this.toAddress = toAddress;
+        this.amount = amount;
+    }
+}
+
 class Block{
-    constructor(index, timestamp, data, previousHash =''){
-        this.index = index;
+    constructor(timestamp, transactions, previousHash =''){
         this.timestamp = timestamp;
-        this.data = data;
+        this.transactions = transactions;
         this.previousHash = previousHash;
         this.hash = this.calculateHash();
         this.nonce = 0;
     }
 
     calculateHash(){
-       return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data) + this.nonce).toString();
+       return SHA256(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).toString();
     }
 
     mineBlock(difficulty){
@@ -27,23 +34,40 @@ class Blockchain{
     constructor(){
         this.chain = [this.createGenesisBlock()];
         this.difficulty = 2;
+        this.pendingTransactions = [];
+        this.miningReward = 100;
     }
 
     createGenesisBlock(){
-        return new Block(0, "20/05/2021", "genesis-block", "0");
+        return new Block("20/05/2021", "genesis-block", "0");
     }
 
     getLatestBlock(){
         return this.chain[this.chain.length-1];
     }
 
-    addBlock(newBlock){
-        // set previousHash and calculate current hash
-        newBlock.previousHash = this.getLatestBlock().hash;
-        newBlock.mineBlock(this.difficulty);
-        // newBlock.hash = newBlock.calculateHash();
-        this.chain.push(newBlock);
+    minePendingTransactions(miningRewardAddress){
+        const rewardTx = new Transaction(null, miningRewardAddress, this.miningReward);
+        this.pendingTransactions.push(rewardTx);
+
+        let block = new Block(Date.now(), this.pendingTransactions, this.getLatestBlock().hash);
+        block.mineBlock(this.difficulty);
+
+        console.log("Block "+this.chain.length+ " successfully mined !");
+        this.chain.push(block);
+
+        this.pendingTransactions = [];
     }
+
+    addTransaction(transaction){
+        if(!transaction.fromAddress || !transaction.toAddress){
+            // throw new Error("Transaction must have from and to address");
+            alert("Transaction must have from and to address");
+        }
+        this.pendingTransactions.push(transaction);
+        console.log("Trasaction pending");
+    }
+
 
     isChainValid(){
         // loop through block to check- hash (by recalculating) and previousHash match
@@ -64,6 +88,9 @@ class Blockchain{
 
 
 
-export { Block as myBlock,
-    Blockchain as myBlockChain};
+export { 
+    Block as myBlock,
+    Blockchain as myBlockChain,
+    Transaction
+};
 

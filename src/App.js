@@ -1,51 +1,77 @@
+import React, {useState} from 'react';
 import './App.css';
-import BlockCard from './BlockCard';
-import { myBlock } from './blockchain-script';
+import BlockCard from './components/BlockCard';
 import { myBlockChain } from './blockchain-script';
+import { Transaction } from './blockchain-script';
+import AppHeader from './components/AppHeader';
+import AppFooter from './components/AppFooter';
 
 function App(props) {
 
-  // create blockchain
   let priCoin = new myBlockChain();
 
-  // create blocks
-  priCoin.addBlock(new myBlock(1, "26/09/2021", "test-data-1"));
-  priCoin.addBlock(new myBlock(2, "22/11/2021", "test-data-2"));
-  // priCoin.addBlock(new myBlock(3, "13/12/2021", "test-data-3"));
+  const [data, setData] = useState('');
 
-  console.log(priCoin);
+  let txList = [];
 
-  console.log(props);
-  const author = props.author;
+  const childToParent = (childData) =>{
+    setData(childData);
+    // console.log(data);
+    txList.push(data);
+  }
+
+  // let flag=0;
+  // if(data !==''){
+  //   console.log("data updated");
+  //   console.log(data);
+  //   let from= data.fromAddress;
+  //   let to = data.toAddress;
+  //   let amt = data.amount;
+  //   console.log(from +" "+to+" "+amt);
+  //   flag=1;
+  // }
+
+ 
+  // if(flag === 1){
+  //   priCoin.addTransaction(new Transaction(data.fromAddress, data.toAddress, data.amount));
+  //   priCoin.minePendingTransactions('address2');
+  // }
+
+  // console.log("Mining pending transactions... ");
+
+  priCoin.addTransaction(new Transaction('address1', 'address2', 56));
+  console.log("Mining pending transactions... ");
+  priCoin.minePendingTransactions('address2');
+
+
+  // console.log(priCoin);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Peel-Coin</h1>
-      </header>
+      <AppHeader childToParent={childToParent}/>
 
       <div className="App-content"> 
         <h2>Blocks on chain: </h2>
         <div className="card-container">
-        {priCoin.chain.map(block =>(
-            <div>
-              <BlockCard
-                index = {block.index}
-                timestamp = {block.timestamp}
-                data = {block.data}
-                hash = {block.hash}
-                previousHash = {block.previousHash}
-              />
-              </div>
-          ))}
-
+            {priCoin.chain.map((block,index) =>(
+                <div key={index}>
+                  <BlockCard
+                    index = {index+1}
+                    timestamp = {block.timestamp}
+                    data = {0}
+                    hash = {block.hash}
+                    previousHash = {block.previousHash}
+                    nonce= {block.nonce}
+                  />
+                </div>
+              ))}
         </div>
 
-          
+        {/* <p>{data.fromAddress} {data.toAddress} {data.amount}</p> */}
+        {/* {txList.length} */}
       </div>
 
-      <footer className="App-footer">
-        <p>&copy; {author}</p>
-      </footer>
+      <AppFooter author={props.author}/>
     </div>
   );
 }
