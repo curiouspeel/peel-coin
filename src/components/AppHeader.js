@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 
 function AppHeader({childToParent}) {
 
+    // let data = "TESTING DATA";
     const [count, setCount] = useState(0);
     const [txInfo, setTxInfo] = useState({fromAddress:"", toAddress:"", amount:""});
     const [transactionList, setTransactionList] = useState([]);
@@ -15,7 +16,8 @@ function AppHeader({childToParent}) {
         event.preventDefault();
         setTransactionList((prevTransaction) => [...prevTransaction, txInfo]);
         setCount(count+1);
-        childToParent(txInfo);
+        // console.log(transactionList[count-1].amount)
+        childToParent(transactionList);
     };
 
     const transactions = transactionList.map((tx, index) => 
@@ -52,7 +54,7 @@ function AppHeader({childToParent}) {
                     onChange={handleChange}
                     required
                 />
-                <input type="submit" value="Make Transaction" onClick={() =>{childToParent(txInfo); console.log("clicked")}}/>
+                <input type="submit" value="Make Transaction"/>
             </form>
             {transactions}
             <p>Pending transactions = {count}</p>
