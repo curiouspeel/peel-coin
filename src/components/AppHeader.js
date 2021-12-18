@@ -3,27 +3,26 @@ import React, {useState} from 'react';
 
 function AppHeader({childToParent}) {
 
-    // let data = "TESTING DATA";
-    const [count, setCount] = useState(0);
-    const [txInfo, setTxInfo] = useState({fromAddress:"", toAddress:"", amount:""});
-    const [transactionList, setTransactionList] = useState([]);
+    // const [count, setCount] = useState(0);
+    // const [txInfo, setTxInfo] = useState({fromAddress:"", toAddress:"", amount:""});
+    // const [transactionList, setTransactionList] = useState([]);
 
-    function handleChange(event){
-        const {name, value} = event.target;
-        setTxInfo((prevState) => ({...prevState, [name]:value}));
-    } 
-    function handleSubmit(event){
-        event.preventDefault();
-        setTransactionList((prevTransaction) => [...prevTransaction, txInfo]);
-        setCount(count+1);
-        // console.log(transactionList[count-1].amount)
-        childToParent(transactionList);
-    };
+    // function handleChange(event){
+    //     const {name, value} = event.target;
+    //     setTxInfo((prevState) => ({...prevState, [name]:value}));
+    // } 
+    // function handleSubmit(event){
+    //     event.preventDefault();
+    //     setTransactionList((prevTransaction) => [...prevTransaction, txInfo]);
+    //     setCount(count+1);
+    //     // console.log(transactionList[count-1].amount)
+    //     childToParent(transactionList);
+    // };
 
-    const transactions = transactionList.map((tx, index) => 
-    (<p key={index}>
-        {tx.fromAddress} {tx.toAddress} {tx.amount}
-    </p>));
+    // const transactions = transactionList.map((tx, index) => 
+    // (<p key={index}>
+    //     {tx.fromAddress} {tx.toAddress} {tx.amount}
+    // </p>));
 
     return (
         <div>
@@ -32,7 +31,7 @@ function AppHeader({childToParent}) {
             </header>
 
 
-            <form onSubmit={handleSubmit}>
+            {/* <form onSubmit={handleSubmit}>
                 <input
                     placeholder="From address"
                     name="fromAddress"
@@ -55,9 +54,9 @@ function AppHeader({childToParent}) {
                     required
                 />
                 <input type="submit" value="Make Transaction"/>
-            </form>
-            {transactions}
-            <p>Pending transactions = {count}</p>
+            </form> */}
+            {/* {transactions}
+            <p>Pending transactions = {count}</p> */}
         </div>
     );
 }

@@ -9,56 +9,62 @@ import AppFooter from './components/AppFooter';
 function App(props) {
 
   let priCoin = new myBlockChain();
-  // let allTransactions =[];
 
-  // const [data, setData] = useState({fromAddress:"", toAddress:"", amount:""});
-  const [data, setData] = useState([]);
-  
-  let txCount=3;
-  const childToParent = (childData) =>{
-    setData(childData);
-    // console.log(data);
+  const [txInfo, setTxInfo] = useState({fromAddress:"", toAddress:"", amount:""});
+  const [transactionList, setTransactionList] = useState([]);
 
-    // counter = count;
-    // console.log(count +" "+ childData+" "+counter);
-    // console.log(counter +" "+ counter%txCount);
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setTxInfo((prevState) => ({ ...prevState, [name]: value }));
   }
+  function handleSubmit(event) {
+    event.preventDefault();
+    setTransactionList((prevTransaction) => [...prevTransaction, txInfo]);
+  };
 
-  if(data.length>0 && (data.length%txCount === 0)){
-    console.log("entered if");
-    console.log(data);
+  // const transactions = transactionList.map((tx, index) =>
+  // (<p key={index}>
+  //   {tx.fromAddress} {tx.toAddress} {tx.amount}
+  // </p>));
 
-    for(let itr=0; itr<txCount; itr++){
-      priCoin.addTransaction(new Transaction(data[itr].fromAddress, data[itr].toAddress, data[itr].amount));
-    }
-    // priCoin.addTransaction(new Transaction('address1', 'address2', 10));
-    console.log("Mining pending transactions... ");
-    priCoin.minePendingTransactions('address2');
-
-    for(let j=0; j<1; j++){
-      priCoin.addTransaction(new Transaction('address1', 'address2', 56));
-      console.log("Mining pending transactions... ");
-      priCoin.minePendingTransactions('address2');
-    }
+  const transactions = transactionList.map((tx, index) =>{
+    priCoin.addTransaction(new Transaction(tx.fromAddress, tx.toAddress, tx.amount));
+    priCoin.minePendingTransactions("address1");
+    return (<p key={index}>
+      {tx.fromAddress} {tx.toAddress} {tx.amount}
+    </p>);
   }
+  );
 
-  // ISSUE !!! BLOCK DISAPPEARS ON EXITING IF
-
-  // for(let j=0; j<5; j++){
-  //   priCoin.addTransaction(new Transaction('address1', 'address2', 56));
-  //   console.log("Mining pending transactions... ");
-  //   priCoin.minePendingTransactions('address2');
-  // }
-
-  // priCoin.addTransaction(new Transaction('address1', 'address2', 56));
-  // console.log("Mining pending transactions... ");
-  // priCoin.minePendingTransactions('address2');
-
-  console.log(priCoin);
 
   return (
     <div className="App">
-      <AppHeader childToParent={childToParent}/>
+      <AppHeader/>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          placeholder="From address"
+          name="fromAddress"
+          value={txInfo.fromAddress}
+          onChange={handleChange}
+          required
+        />
+        <input
+          placeholder="To address"
+          name="toAddress"
+          value={txInfo.toAddress}
+          onChange={handleChange}
+          required
+        />
+        <input
+          placeholder="Amount"
+          name="amount"
+          value={txInfo.amount}
+          onChange={handleChange}
+          required
+        />
+        <input type="submit" value="Make Transaction" />
+      </form>
 
       <div className="App-content"> 
         <h2>Blocks on chain: </h2>
@@ -77,7 +83,7 @@ function App(props) {
               ))}
         </div>
       </div>
-      {/* {data.fromAddress} {data.toAddress} {data.amount} */}
+      {transactions}
       <AppFooter author={props.author}/>
     </div>
   );

@@ -56,13 +56,15 @@ class Blockchain{
         console.log("Block "+this.chain.length+ " successfully mined !");
         this.chain.push(block);
 
+        console.log("SCRIPT ---"+this.chain);
+
         this.pendingTransactions = [];
     }
 
     addTransaction(transaction){
         if(!transaction.fromAddress || !transaction.toAddress){
             // throw new Error("Transaction must have from and to address");
-            alert("Transaction must have from and to address");
+            // alert("Transaction must have from and to address");
         }
         this.pendingTransactions.push(transaction);
         console.log("Trasaction pending");
