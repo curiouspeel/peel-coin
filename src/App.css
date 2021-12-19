@@ -37,6 +37,38 @@
   gap: 20px;
 }
 
+/* form{ 
+  display: flex;
+  flex-direction: column;
+} */
+input{
+  font-size: 0.9rem;
+  margin-right: 5px;
+  padding: 8px 12px;
+  /* width: 300px; */
+}
+
+input[type=submit]{
+  background-color:  #00508e;
+  color: white;
+  /* border: none; */
+  text-decoration: none;
+  padding: 8px 16px;
+  /* margin-left: 10px; */
+  cursor: pointer;
+}
+
+@media (max-width: 450px){
+    form{
+    display: flex;
+    flex-direction: column;
+  }
+  input{
+    margin: 5px 0;
+  }
+}
+
+
 @media (max-width: 650px) {
   .card-container{
     display: flex;
