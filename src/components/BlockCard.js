@@ -1,16 +1,14 @@
 import '../BlockCard.css';
 import React from 'react';
-// import { myBlock } from './blockchain-script';
 
 function BlockCard(props){
-
-    // let block = new myBlock();
 
     let blockData = {
         Hash: props.hash,
         PreviousHash: props.previousHash,
         Timestamp: props.timestamp,
-        Nonce: props.nonce
+        Nonce: props.nonce,
+        Data: props.data
     };
 
     let keys = Object.keys(blockData);
@@ -25,8 +23,6 @@ function BlockCard(props){
     );
 
 
-    // console.log(blockInfo);
-
     return(
         <div className="card">
             <h3 className="card-title">
@@ -34,32 +30,6 @@ function BlockCard(props){
             </h3>
 
             <ul>{blockInfo}</ul>
-
-            {/* <div className="card-info">
-                <ul>
-                    <li><strong>Hash:</strong>
-                        <br/>
-                        {props.hash}
-                    </li>
-                    <li><strong>Hash of previous block:</strong> 
-                        <br/>
-                        {props.previousHash}
-                    </li>
-                </ul>
-            </div>
-                
-            <div className="card-info">
-                <ul>
-                    <li><strong>Timsestamp: </strong>
-                        <br/>
-                        {props.timestamp}
-                    </li>
-                    <li><strong>Nonce:</strong> 
-                        <br/>
-                        {props.nonce}
-                    </li>
-                </ul>
-            </div> */}
         </div>
     );
 }

@@ -1,17 +1,21 @@
-import React, {useState} from 'react';
 import './App.css';
+import React, {useState, useEffect} from 'react';
+import { myBlockChain, Transaction } from './blockchain-script';
 import BlockCard from './components/BlockCard';
-import { myBlockChain } from './blockchain-script';
-import { Transaction } from './blockchain-script';
 import AppHeader from './components/AppHeader';
 import AppFooter from './components/AppFooter';
 
 function App(props) {
 
-  let priCoin = new myBlockChain();
+  let [priCoin, setpriCoin] = useState(new myBlockChain());
 
-  const [txInfo, setTxInfo] = useState({fromAddress:"", toAddress:"", amount:""});
   const [transactionList, setTransactionList] = useState([]);
+  const [txInfo, setTxInfo] = useState({
+    fromAddress:"",
+    toAddress:"",
+    amount:""
+  });
+
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -19,23 +23,29 @@ function App(props) {
   }
   function handleSubmit(event) {
     event.preventDefault();
-    setTransactionList((prevTransaction) => [...prevTransaction, txInfo]);
+
+    priCoin.addTransaction(new Transaction(txInfo.fromAddress, txInfo.toAddress, txInfo.amount));
+    priCoin.minePendingTransactions("miner's address");
+
+    setTransactionList((prevTransaction) => [...prevTransaction, 
+    txInfo]);
+
+    setTxInfo(()=> ({
+      fromAddress:"",
+      toAddress:"",
+      amount:""
+    }));
+
+    getLastItemFromChain();
   };
 
-  // const transactions = transactionList.map((tx, index) =>
-  // (<p key={index}>
-  //   {tx.fromAddress} {tx.toAddress} {tx.amount}
-  // </p>));
-
-  const transactions = transactionList.map((tx, index) =>{
-    priCoin.addTransaction(new Transaction(tx.fromAddress, tx.toAddress, tx.amount));
-    priCoin.minePendingTransactions("address1");
-    return (<p key={index}>
-      {tx.fromAddress} {tx.toAddress} {tx.amount}
-    </p>);
+  const getLastItemFromChain = () =>{
+    let block = priCoin.chain[priCoin.chain.length-1];
   }
-  );
 
+  useEffect(() => {
+    getLastItemFromChain();
+  }, []);
 
   return (
     <div className="App">
@@ -74,7 +84,7 @@ function App(props) {
                   <BlockCard
                     index = {index+1}
                     timestamp = {block.timestamp}
-                    data = {0}
+                    data = {index === 0? block.transactions :block.transactions[0].amount}
                     hash = {block.hash}
                     previousHash = {block.previousHash}
                     nonce= {block.nonce}
@@ -83,7 +93,7 @@ function App(props) {
               ))}
         </div>
       </div>
-      {transactions}
+
       <AppFooter author={props.author}/>
     </div>
   );
